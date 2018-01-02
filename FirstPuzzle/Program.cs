@@ -1,19 +1,28 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace FirstPuzzle
 {
     class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
-            if(args.Length < 1)
-               throw new ArgumentNullException(nameof(args));
-            Console.WriteLine($"Rezultat prve polovice je: {new PuzzleSolver(args[0]?.Select(c => Int32.Parse(c.ToString()))).SolveFirstHalf()}");
-            Console.WriteLine($"Rezultat druge polovice je: {new PuzzleSolver(args[0]?.Select(c => Int32.Parse(c.ToString()))).SolveSecondHalf()}");
+            var openFileDialog = new OpenFileDialog
+            {
+                Title = "Select a input file",
+                Filter = "Txt file|*.txt"
+            };
+            if (openFileDialog.ShowDialog() != DialogResult.OK) return;
+            var input = File.ReadAllLines(openFileDialog.FileName);
+            var puzzleSolver = new PuzzleSolver(input.Select(int.Parse));
+            Console.WriteLine(puzzleSolver.SolveFirstHalf());
+            Console.WriteLine(puzzleSolver.SolveSecondHalf());
             Console.ReadLine();
         }
     }

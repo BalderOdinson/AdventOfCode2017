@@ -1,0 +1,29 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace TenthPuzzle
+{
+    class Program
+    {
+        [STAThread]
+        static void Main(string[] args)
+        {
+            var openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "Select a input file";
+            openFileDialog.Filter = "Txt file|*.txt";
+            if (openFileDialog.ShowDialog() != DialogResult.OK) return;
+            var input = File.ReadAllLines(openFileDialog.FileName);
+            var puzzleSolver = new PuzzleSolver(input[0]);
+            Console.WriteLine(puzzleSolver.SolveFirst());
+            var result = puzzleSolver.SolveSecond();
+            Console.WriteLine(result);
+            File.WriteAllText("output.txt", result);
+            Console.ReadLine();
+        }
+    }
+}
